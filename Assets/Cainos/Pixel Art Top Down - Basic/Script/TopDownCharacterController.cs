@@ -15,7 +15,7 @@ namespace Cainos.PixelArtTopDown_Basic
         float verticallMove = 0;
         private Rigidbody2D rigidBody;
         public Joystick joystick;
-        private bool isColliding = false;
+      
 
 
 
@@ -99,15 +99,7 @@ namespace Cainos.PixelArtTopDown_Basic
 
         }
 
-        private void OnCollisionEnter2D(Collision2D collision)
-        {
-            isColliding = true;
-        }
-
-        private void OnCollisionExit2D(Collision2D collision)
-        {
-            isColliding = false;
-        }
+       
 
 
         
