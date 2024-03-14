@@ -85,16 +85,12 @@ namespace Cainos.PixelArtTopDown_Basic
                     animator.SetInteger("Direction", 0);
                 }
 
-
-
-
                 GetComponent<Rigidbody2D>().velocity = new Vector2(horizontalMove, verticallMove).normalized * speedJoystick;
             }
 
             
 
 
-            //transform.position += new Vector3(horizontalMove, verticallMove, 0) * Time.deltaTime * speedJoystick;
 
 
         }
