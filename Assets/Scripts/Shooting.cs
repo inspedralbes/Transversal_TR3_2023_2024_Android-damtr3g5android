@@ -7,33 +7,30 @@ public class Shooting : MonoBehaviour
     public Transform firePoint;
     public GameObject bulletPrefab;
     public float bulletForce = 20f;
-    public VariableJoystick joystick;
-    private bool isJoystickMoving = false;
+    public VariableJoystick joystick;   
+
+    public float fireRate = 0.5f; // Tiempo entre disparos en segundos
+    private float timeSinceLastShot = 0f; // Tiempo transcurrido desde el último disparo
 
 
     // Update is called once per frame
     void Update()
     {
         Vector3 joystickPosition = new Vector3(joystick.Horizontal, joystick.Vertical, 0f);
-        // Verificar si el joystick está en movimiento
-        if (joystickPosition.magnitude < joystick.MoveThreshold)
+       
+        // Verificar si el joystick está en el centro
+        if (joystick.Horizontal == 0f && joystick.Vertical == 0f)
         {
-             isJoystickMoving = false;
-            Debug.Log("Joystick is not moving");
-            
-        }
-        else
-        {
-            isJoystickMoving = true;
-            Debug.Log("Joystick is moving");
-           
+            // El joystick está en el centro, detener el disparo
+            return;
         }
 
-        // Si el joystick está en movimiento, disparar continuamente
-        if (isJoystickMoving)
+        // Verificar si ha pasado suficiente tiempo desde el último disparo
+        if (Time.time - timeSinceLastShot >= fireRate)
         {
+            // Disparar y actualizar el tiempo del último disparo
             Shoot();
-            Debug.Log("Shoot");
+            timeSinceLastShot = Time.time;
         }
     }
     void Shoot()

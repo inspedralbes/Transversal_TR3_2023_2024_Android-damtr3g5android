@@ -6,6 +6,7 @@ public class FirePointerController : MonoBehaviour
 {
     public Transform player;
     public VariableJoystick joystick;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -25,7 +26,7 @@ public class FirePointerController : MonoBehaviour
         Vector3 joystickPosition = new Vector3(joystick.Horizontal, joystick.Vertical, 0f);
 
         // Si el joystick no está siendo utilizado, no realizamos ninguna acción
-        if (joystickPosition.magnitude < joystick.MoveThreshold)
+        if (joystick.Horizontal == 0f && joystick.Vertical == 0f)
             return;
 
         // Normalizamos la posición del joystick para obtener la dirección de apuntado
