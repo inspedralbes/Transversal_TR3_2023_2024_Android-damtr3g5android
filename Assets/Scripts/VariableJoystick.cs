@@ -44,9 +44,7 @@ public class VariableJoystick : Joystick
 
     public override void OnPointerUp(PointerEventData eventData)
     {
-        SetMode(JoystickType.Fixed);
-        //if(joystickType != JoystickType.Fixed)
-            //background.gameObject.SetActive(false);
+        SetMode(JoystickType.Fixed);        
 
         base.OnPointerUp(eventData);
     }

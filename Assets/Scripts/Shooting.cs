@@ -7,14 +7,33 @@ public class Shooting : MonoBehaviour
     public Transform firePoint;
     public GameObject bulletPrefab;
     public float bulletForce = 20f;
+    public VariableJoystick joystick;
+    private bool isJoystickMoving = false;
 
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButtonDown("Fire1"))
+        Vector3 joystickPosition = new Vector3(joystick.Horizontal, joystick.Vertical, 0f);
+        // Verificar si el joystick está en movimiento
+        if (joystickPosition.magnitude < joystick.MoveThreshold)
+        {
+             isJoystickMoving = false;
+            Debug.Log("Joystick is not moving");
+            
+        }
+        else
+        {
+            isJoystickMoving = true;
+            Debug.Log("Joystick is moving");
+           
+        }
+
+        // Si el joystick está en movimiento, disparar continuamente
+        if (isJoystickMoving)
         {
             Shoot();
+            Debug.Log("Shoot");
         }
     }
     void Shoot()
