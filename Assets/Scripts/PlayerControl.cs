@@ -91,21 +91,7 @@ namespace Cainos.PixelArtTopDown_Basic
             else {
                 rigidBody.MovePosition(rigidBody.position + movementJoystick * Time.fixedDeltaTime);
             }
-        }
-
-        /*void UpdateDirection(Vector2 movement)
-        {
-            if (Mathf.Abs(movement.x) > Mathf.Abs(movement.y))
-            {
-                // Horizontal movement
-                animator.SetInteger("Direction", movement.x > 0 ? 1 : 3); // Right = 1, Left = 3
-            }
-            else
-            {
-                // Vertical movement
-                animator.SetInteger("Direction", movement.y > 0 ? 0 : 2); // Up = 0, Down = 2
-            }
-        }*/
+        }       
 
 
 

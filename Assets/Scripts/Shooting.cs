@@ -33,6 +33,13 @@ public class Shooting : MonoBehaviour
             timeSinceLastShot = Time.time;
         }
     }
+
+    // Método público para cambiar el fireRate
+    public void ChangeFireRate(float newFireRate)
+    {
+        fireRate = newFireRate;
+    }
+
     void Shoot()
     {
         Quaternion bulletRotation = Quaternion.Euler(firePoint.eulerAngles.x, firePoint.eulerAngles.y, firePoint.eulerAngles.z + 90);
