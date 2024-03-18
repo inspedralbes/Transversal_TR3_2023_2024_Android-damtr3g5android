@@ -871,6 +871,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4015916824447805541, guid: 48ca59a951328dc4f93a5f75681b1b56, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 5442483207543868205, guid: 48ca59a951328dc4f93a5f75681b1b56, type: 3}
       propertyPath: m_Name
       value: Chest (1)
@@ -1356,6 +1360,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1353969607}
   m_CullTransparentMesh: 1
+--- !u!1 &1408779874 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7099279590989803959, guid: 44e238a9acb41c24e93ff5627a09494a, type: 3}
+  m_PrefabInstance: {fileID: 484059214}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1475267216
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1422,26 +1431,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1525638144}
-  - component: {fileID: 1525638143}
+  - component: {fileID: 1525638145}
   m_Layer: 0
-  m_Name: Network
+  m_Name: Network Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1525638143
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1525638142}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 46d73f6c80d8b0841a43232b3833affd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &1525638144
 Transform:
   m_ObjectHideFlags: 0
@@ -1457,6 +1454,25 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1525638145
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1525638142}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a95937e78b8aaa479c90959a3c8be5d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 1408779874}
+  playerData:
+    id: 
+    xPos: 0
+    yPos: 0
+    timestamp: 0
+  updateRate: 0.1
 --- !u!1 &1622945577
 GameObject:
   m_ObjectHideFlags: 0
@@ -1732,7 +1748,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   version: 1
   data:
-    dataString: UEsDBBQAAAgIAAAIIewYdt8vaAIAACAFAAALACQAZ3JhcGgwLmpzb24KACAAAAAAAAEAGAAAgD7V3rGdAQCAPtXesZ0BAIA+1d6xnQFlVE1z2jAQ/SuMzoUxBlLorTWE9EDChHZy8UVYa6xBljz6CJAM/70r2cYuOSHe27f7drXyJ+HSVJBZpdeas41iQH4MiD+Tb4OOfIIzPSi54x/QxrxxZgsfREPMK7VcIT72MqNKsJpnP+VB+OAIQSd5rnS5YgdIlLEG4ZwKA0hpZb1aIvQ5IGf8GS685IKn+Ls/feBpEQ2ueMxAWtBdaBs4jEbRJI4Xk9lsPm4ktcLJTNCyAubtd8K4VY7rMImNNRFenykhuGlcEXupQtcJrYzDnjCAcYpdBivj0QSBAvihsD5zX/6S5wZsY1TTy5JrHFedl/xS9QxLao61s3cqnK/0MA2m6pybL/RwHOhcq/KpLTuOfAlb8Oz4Si8ZNbY34z687DkP8zlRcaR7AW8FyGe11spJhqTVzkudgXjZ/b11lhSQHTu8tnoHuurrTbUX6nu4hubPieDl3lOjaQ3shAoDD3sAGq/mNxoOW2KaFIh6F38N/KGH/jo1xCPXxiLVdCm9vb1y2oeSVZiZ78bZRGkJAW5MVyCpsJctprH3N3jH9creMY/UP5ymeMO17+FOEuAuPoruqK063S7LFOq0AVO8OCu4hM60J55xTomSsl6w/kxa2c7pnGY92cFx9v9qkXgfL7L5NJrTOTzM9ovhdBZPZzM2zSOY5ItoT8LucYl9UrGtjTbjwVuTXXKJe9Z+TwZrTauw7EzT05p/lKpvkMtc7TINIF/qFDfnoLEKvku2YhwntANruQwXTj5TIlR2BJbeaqah1dXZapp2WVJS8XdlPZKSJHxBUuLh2zJvNbxzOPnibbIruf4DUEsDBBQAAAgIAAAIIewIv6vxbQAAAHgAAAAJACQAbWV0YS5qc29uCgAgAAAAAAABABgAAIA+1d6xnQEAgD7V3rGdAQCAPtXesZ0Bq1YqSy0qzszPU7JSMNEz0jM011FQSi9KLMgoBooYgjilmSkgdrSSUZKRZbKFiYFFokWqmWmSpa6JqZGJqWmKSZpBqnGapUGSUixQfUllQapfYm4qRE9AYklGWmZeSmZeup57UWaKO8hopdhaAFBLAQItABQAAAgIAAAIIewYdt8vaAIAACAFAAALACQAAAAAAAAAAAAAAAAAAABncmFwaDAuanNvbgoAIAAAAAAAAQAYAACAPtXesZ0BAIA+1d6xnQEAgD7V3rGdAVBLAQItABQAAAgIAAAIIewIv6vxbQAAAHgAAAAJACQAAAAAAAAAAAAAALUCAABtZXRhLmpzb24KACAAAAAAAAEAGAAAgD7V3rGdAQCAPtXesZ0BAIA+1d6xnQFQSwUGAAAAAAIAAgC4AAAAbQMAAAAA
+    dataString: UEsDBBQAAAgIAAAIIeyGLISVaAIAACAFAAALACQAZ3JhcGgwLmpzb24KACAAAAAAAAEAGAAAgD7V3rGdAQCAPtXesZ0BAIA+1d6xnQFlVEtz2jAQ/iuMziVjHJxCb61DSA8kTGgnF1+EtcYaZMmjB49k+O9dyTZ2yYnl2/12v33In4RLU0NulV5qzlaKAfkxIt4m30a98xlOdKfkhn9AF/POmS19EA0xb9RyhfjE04yqwGqe/5Q74YMjBJ3khdLVgu0gVcYahAsqDKBLK+vZEqHPETnhz3juKWe04u/e+kBrHo0uaOYgLeg+tAscR3fRfRzP75NkNmkpDcPJXNCqBubl98S4Y06aMImNtRGenyshuGlVEXuuQ9cprY3DnjCAcYpdBinRXYJACXxXWp95SH8tCgO2Farp+ZFrHFeTl/xSzQwravaNsgMVzld6mAZRTc7VF/d4EtyFVtVzV3YS+RK25Pn+jZ5zauxgxkP4sVc+CfM5UrGnWwHvJcgXtdTKSYZOq52nOgPxY//32llaQr7v8UbqDejqr5vqFup7uITmT6ng1TYMctoAG6HCwMMdgMbV/EbB4UpMmwJRr+KvgT90Nzyn1vHEtbHoaruUXt5WOe1DySLMzHfjbKq0hAC3omuQVNjzGtPY2w3e+AZlbzxP1D+ctnjr697DDSXAfXwU3bjW6nhdlinVcQWmfHVWcAm9aO94wTmlSsrmwIYz6WgbpwuaD2g7x9n/p0XibTzPZ9NoRmfwkGzn42kST5OETYsI7ot5tCXh9rjEPqlYN0Lb8eDWZJ9c4p1135PRUtM6HDvT9LjkH5UaCuSyUJtcA8jXJsVVOWisgu+SLRjHCW3AWi7DwslnRoTK98Cya80stLo4WU2zPktGan5Q1iMZScMXJCMevh7zWsOBw9EX75JdyOUfUEsDBBQAAAgIAAAIIewIv6vxbQAAAHgAAAAJACQAbWV0YS5qc29uCgAgAAAAAAABABgAAIA+1d6xnQEAgD7V3rGdAQCAPtXesZ0Bq1YqSy0qzszPU7JSMNEz0jM011FQSi9KLMgoBooYgjilmSkgdrSSUZKRZbKFiYFFokWqmWmSpa6JqZGJqWmKSZpBqnGapUGSUixQfUllQapfYm4qRE9AYklGWmZeSmZeup57UWaKO8hopdhaAFBLAQItABQAAAgIAAAIIeyGLISVaAIAACAFAAALACQAAAAAAAAAAAAAAAAAAABncmFwaDAuanNvbgoAIAAAAAAAAQAYAACAPtXesZ0BAIA+1d6xnQEAgD7V3rGdAVBLAQItABQAAAgIAAAIIewIv6vxbQAAAHgAAAAJACQAAAAAAAAAAAAAALUCAABtZXRhLmpzb24KACAAAAAAAAEAGAAAgD7V3rGdAQCAPtXesZ0BAIA+1d6xnQFQSwUGAAAAAAIAAgC4AAAAbQMAAAAA
     upgradeData: 
     file_cachedStartup: {fileID: 0}
     data_cachedStartup: 
@@ -2336,6 +2352,7 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 519420032}
+  - {fileID: 1525638144}
   - {fileID: 2044497262}
   - {fileID: 6131561451806844313}
   - {fileID: 8081119321547571176}
@@ -2356,4 +2373,3 @@ SceneRoots:
   - {fileID: 731386799}
   - {fileID: 560443639}
   - {fileID: 676675891}
-  - {fileID: 1525638144}
