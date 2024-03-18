@@ -222,7 +222,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 3
   speedJoystick: 3
-  joystick: {fileID: 0}
+  joystick: {fileID: 2913826928807209794, guid: 4dcbb17139fd3cc4fa45bf2891d83f21, type: 3}
 --- !u!95 &5274998221996617023
 Animator:
   serializedVersion: 5
