@@ -31,5 +31,16 @@ public class PlayerDamage : MonoBehaviour
         this.life--;
     }
 
-   
+    public void SumarVida()
+    {
+        if (this.life <= 90)
+        {
+            this.life += 10;
+        }
+        else if (this.life > 90 && this.life < 100) {
+            this.life = 100;
+        }
+    }
+
+
 }
