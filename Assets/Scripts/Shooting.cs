@@ -1,16 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Shooting : MonoBehaviour
 {
     public Transform firePoint;
     public GameObject bulletPrefab;
     public float bulletForce = 20f;
-    public VariableJoystick joystick;   
+    public VariableJoystick joystick;
+    [SerializeField] private Slider barraAmmo;
 
     public float fireRate = 0.5f; // Tiempo entre disparos en segundos
     private float timeSinceLastShot = 0f; // Tiempo transcurrido desde el último disparo
+    private int ammoGun = 100;
+    private int ammoMachineGun = 0;
+    private int ammoShotGun = 0;
+
+    private void Start()
+    {
+        barraAmmo.maxValue = ammoGun;
+        barraAmmo.value = ammoGun;
+    }
 
 
     // Update is called once per frame
@@ -38,6 +49,29 @@ public class Shooting : MonoBehaviour
     public void ChangeFireRate(float newFireRate)
     {
         fireRate = newFireRate;
+    }
+
+    // Método público para cambiar el tipo municion
+    public void ChangeWeapon(string newWeapon)
+    {
+        if (newWeapon.Equals("Gun"))
+        {
+            barraAmmo.value = ammoGun;
+            fireRate = 0.5f;
+
+        }
+        else if (newWeapon.Equals("Machinegun")) {
+            barraAmmo.value = ammoMachineGun;
+            fireRate = 0.1f;
+
+        }
+        else if (newWeapon.Equals("Shotgun"))
+        {
+            barraAmmo.value = ammoShotGun;
+            fireRate = 0.7f;
+
+        }
+
     }
 
     void Shoot()
