@@ -297,6 +297,10 @@ PrefabInstance:
       propertyPath: joystick
       value: 
       objectReference: {fileID: 3881087802129270664}
+    - target: {fileID: 5925534106139035188, guid: 44e238a9acb41c24e93ff5627a09494a, type: 3}
+      propertyPath: isControlling
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7099279590989803959, guid: 44e238a9acb41c24e93ff5627a09494a, type: 3}
       propertyPath: m_Name
       value: Player
@@ -1468,6 +1472,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   networkContainer: {fileID: 1587529589}
+  playerPrefab: {fileID: 0}
   player: {fileID: 1408779874}
   playerData:
     id: 
