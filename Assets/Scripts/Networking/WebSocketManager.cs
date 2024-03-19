@@ -115,9 +115,10 @@ namespace Networking
             OnSpawn += (data) =>
             {
                 string id = data["id"].ToString().RemoveQuotes();
-
+                Debug.Log("Spawneado 1");
                 actionsToExecuteOnMainThread.Enqueue(() =>
                 {
+                    Debug.Log("Spawneado");
                     GameObject go = Instantiate(playerPrefab, networkContainer);
                     go.name = string.Format("Player({0})", id);
                     NetworkIdentity ni = go.GetComponent<NetworkIdentity>();
@@ -138,9 +139,9 @@ namespace Networking
             OnUpdatePosition += (data) =>
             {
                 string id = data["id"].ToString().RemoveQuotes();
-                float x = data["position"]["x"].Value<float>;
-                float y = data["position"]["y"].Value<float>;
-
+                float x = data["position"]["x"].Value<float>();
+                float y = data["position"]["y"].Value<float>();
+                Debug.Log("ID en movimiento " + id);
                 NetworkIdentity ni = serverObjects[id];
                 ni.transform.position = new Vector3(x, y, 0);
             };
@@ -160,11 +161,12 @@ namespace Networking
         // Update is called once per frame
         void Update()
         {
-            /*
+            
             while (actionsToExecuteOnMainThread.TryDequeue(out var action))
             {
                 action.Invoke();
             }
+            /*
             if (socket == null || Time.time < nextUpdateTime)
             {
                 return;

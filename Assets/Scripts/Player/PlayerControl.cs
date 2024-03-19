@@ -6,9 +6,15 @@ namespace Cainos.PixelArtTopDown_Basic
 {
     public class PlayerControl : MonoBehaviour
     {
+        [Header("Data")]
+        [SerializeField]
         public float speed =3;
 
         public float speedJoystick=3;
+
+        [Header("Class Refereneces")]
+        [SerializeField]
+        private NetworkIdentity networkIdentity;
 
         private Animator animator;
         float horizontalMove = 0;
@@ -32,37 +38,53 @@ namespace Cainos.PixelArtTopDown_Basic
 
         private void Update()
         {
+            if (networkIdentity.IsControlling())
+            {
+                checkMovement();
+            }
+            
+               
+
+                
+            
+
+
+        }
+        public void checkMovement()
+        {
             movement = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
             animator.SetFloat("horizontal", movement.x);
             animator.SetFloat("vertical", movement.y);
             animator.SetFloat("speed", movement.sqrMagnitude);
 
-            
 
-            if (movement != Vector2.zero) {
+
+            if (movement != Vector2.zero)
+            {
                 //UpdateDirection(movement);
                 animator.SetFloat("lastHorizontal", movement.x);
                 animator.SetFloat("lastVertical", movement.y);
             }
-            else {
+            else
+            {
                 horizontalMove = joystick.Horizontal * speed;
                 verticallMove = joystick.Vertical * speed;
-                
 
-                if (horizontalMove<0)
+
+                if (horizontalMove < 0)
                 {
 
                     animator.SetFloat("horizontal", horizontalMove);
-                   
+
                 }
                 else if (horizontalMove > 0)
                 {
 
                     animator.SetFloat("horizontal", horizontalMove);
-                   
+
                 }
 
-                if (verticallMove > 0 && Mathf.Abs(verticallMove)> Mathf.Abs(horizontalMove))
+                if (verticallMove > 0 && Mathf.Abs(verticallMove) > Mathf.Abs(horizontalMove))
                 {
 
                     animator.SetFloat("vertical", verticallMove);
@@ -75,12 +97,8 @@ namespace Cainos.PixelArtTopDown_Basic
 
                 movementJoystick = new Vector2(horizontalMove, verticallMove).normalized * speedJoystick;
                 animator.SetFloat("speed", movementJoystick.sqrMagnitude);
-               
-
-                
             }
-
-
+            
         }
         private void FixedUpdate()
         {
@@ -88,7 +106,8 @@ namespace Cainos.PixelArtTopDown_Basic
             {
                 rigidBody.MovePosition(rigidBody.position + movement * speed * Time.fixedDeltaTime);
             }
-            else {
+            else
+            {
                 rigidBody.MovePosition(rigidBody.position + movementJoystick * Time.fixedDeltaTime);
             }
         }

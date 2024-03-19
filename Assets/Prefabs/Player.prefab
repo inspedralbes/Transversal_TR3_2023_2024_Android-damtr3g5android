@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 4551841741263391179}
-  joystick: {fileID: 0}
+  joystick: {fileID: 4993164406901102352, guid: 45d91e08a4a539444a5b11b07ec83539, type: 3}
 --- !u!1 &7099279590989803959
 GameObject:
   m_ObjectHideFlags: 0
@@ -224,7 +224,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 3
   speedJoystick: 3
-  joystick: {fileID: 0}
+  networkIdentity: {fileID: 5925534106139035188}
+  joystick: {fileID: 2913826928807209794, guid: 4dcbb17139fd3cc4fa45bf2891d83f21, type: 3}
 --- !u!95 &5274998221996617023
 Animator:
   serializedVersion: 5
@@ -289,3 +290,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6844d99713ea2d4f8f12db82800a263, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  oldPosition: {x: 0, y: 0, z: 0}
