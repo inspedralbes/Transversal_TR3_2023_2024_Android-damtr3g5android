@@ -34,8 +34,8 @@ public class EnemyBehavior : MonoBehaviour
         {
             life--;
             barraVida.value = life;
-            //Destroy(this.gameObject);
-            Debug.Log(life);
+            
+            //Debug.Log(life);
 
         }
         

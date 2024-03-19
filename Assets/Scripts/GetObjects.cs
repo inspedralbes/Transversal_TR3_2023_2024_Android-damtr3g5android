@@ -8,7 +8,9 @@ public class GetObjects : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Chest"))
         {
-            
+            int randomNumber = Random.Range(1, 3); // Genera un número aleatorio entre 1 y 2
+
+            this.gameObject.GetComponent<Shooting>().GetAmmo(randomNumber);
             Destroy(collision.gameObject);            
 
         }

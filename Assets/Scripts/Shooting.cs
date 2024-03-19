@@ -16,6 +16,8 @@ public class Shooting : MonoBehaviour
     private int ammoGun = 100;
     private int ammoMachineGun = 0;
     private int ammoShotGun = 0;
+    private bool canShoot = true;
+    private string weaponSelected= "";
 
     private void Start()
     {
@@ -27,6 +29,7 @@ public class Shooting : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        comprobarAmmo();
         Vector3 joystickPosition = new Vector3(joystick.Horizontal, joystick.Vertical, 0f);
        
         // Verificar si el joystick está en el centro
@@ -37,41 +40,102 @@ public class Shooting : MonoBehaviour
         }
 
         // Verificar si ha pasado suficiente tiempo desde el último disparo
-        if (Time.time - timeSinceLastShot >= fireRate)
+        if (Time.time - timeSinceLastShot >= fireRate && canShoot)
         {
             // Disparar y actualizar el tiempo del último disparo
             Shoot();
+            setAmmo();
             timeSinceLastShot = Time.time;
         }
     }
+       
 
-    // Método público para cambiar el fireRate
-    public void ChangeFireRate(float newFireRate)
-    {
-        fireRate = newFireRate;
-    }
-
-    // Método público para cambiar el tipo municion
+    // Método público para cambiar el tipo arma
     public void ChangeWeapon(string newWeapon)
     {
         if (newWeapon.Equals("Gun"))
         {
             barraAmmo.value = ammoGun;
             fireRate = 0.5f;
-
+            weaponSelected = newWeapon;
         }
         else if (newWeapon.Equals("Machinegun")) {
             barraAmmo.value = ammoMachineGun;
             fireRate = 0.1f;
+            if (ammoMachineGun == 0)
+            {
+                canShoot = false;
+            }
+            else {
+                canShoot = true;
+            }
+            weaponSelected = newWeapon;
 
         }
         else if (newWeapon.Equals("Shotgun"))
         {
             barraAmmo.value = ammoShotGun;
             fireRate = 0.7f;
+            if (ammoShotGun == 0)
+            {
+                canShoot = false;
+            }
+            else
+            {
+                canShoot = true;
+            }
+            weaponSelected = newWeapon;
 
         }
 
+    }
+
+    public void GetAmmo(int numero)
+    {
+        if (numero == 1)
+        {
+            ammoMachineGun += 20;
+            Debug.Log("Municion Machinegun +20");
+
+        }
+        else if (numero == 2)
+        {
+            ammoShotGun += 10;
+            Debug.Log("Municion Shotgun +10");
+
+        }
+
+    }
+
+    void setAmmo()
+    {
+        if (weaponSelected.Equals("Machinegun")&& ammoMachineGun>0) {
+            ammoMachineGun--;
+            barraAmmo.value = ammoMachineGun;
+            Debug.Log("Municion MachineGun: "+ammoMachineGun);
+        }
+        else if (weaponSelected.Equals("Shotgun")&& ammoShotGun>0)
+        {
+            ammoShotGun--;
+            barraAmmo.value = ammoShotGun;
+            Debug.Log("Municion Shotgun: "+ammoShotGun);
+        }
+    }
+
+    void comprobarAmmo()
+    {
+        if (weaponSelected.Equals("Machinegun") && ammoMachineGun == 0)
+        {
+            canShoot = false;
+        }
+        else if (weaponSelected.Equals("Shotgun") && ammoShotGun == 0)
+        {
+            canShoot = false;
+        }
+        else if (weaponSelected.Equals("Gun"))
+        {
+            canShoot = true;
+        }
     }
 
     void Shoot()
