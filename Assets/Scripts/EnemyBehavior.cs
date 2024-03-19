@@ -22,7 +22,7 @@ public class EnemyBehavior : MonoBehaviour
 
     private void Update()
     {
-        if (life==0) {
+        if (life<=0) {
             Destroy(this.gameObject);
         }
     }
@@ -32,7 +32,9 @@ public class EnemyBehavior : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Bullet"))
         {
-            life--;
+            //life--;
+            //Cogemos el daño(damage) que tiene puesto el disparo(bullet)
+            life-= collision.gameObject.GetComponent<Bullet>().damage;
             barraVida.value = life;
             
             //Debug.Log(life);

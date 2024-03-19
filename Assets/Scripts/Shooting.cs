@@ -9,7 +9,8 @@ public class Shooting : MonoBehaviour
     public GameObject bulletPrefab;
     public float bulletForce = 20f;
     public VariableJoystick joystick;
-    [SerializeField] private Slider barraAmmo;    
+    [SerializeField] private Slider barraAmmo;
+    private int bulletDamage = 1;
 
     public float fireRate = 0.5f; // Tiempo entre disparos en segundos
     private float timeSinceLastShot = 0f; // Tiempo transcurrido desde el último disparo
@@ -39,7 +40,7 @@ public class Shooting : MonoBehaviour
         {
             // El joystick está en el centro, detener el disparo
             return;
-        }
+        }       
 
         // Verificar si ha pasado suficiente tiempo desde el último disparo
         if (Time.time - timeSinceLastShot >= fireRate && canShoot)
@@ -49,6 +50,7 @@ public class Shooting : MonoBehaviour
             setAmmo();
             timeSinceLastShot = Time.time;
         }
+        
     }
        
 
@@ -126,12 +128,14 @@ public class Shooting : MonoBehaviour
             ammoMachineGun--;
             SetAmmoMachinegun();
             Debug.Log("Municion MachineGun: "+ammoMachineGun);
+           
         }
         else if (weaponSelected.Equals("Shotgun")&& ammoShotGun>0)
         {
             ammoShotGun--;
             SetAmmoShotgun();
             Debug.Log("Municion Shotgun: "+ammoShotGun);
+            
         }
     }
 
@@ -149,27 +153,35 @@ public class Shooting : MonoBehaviour
         {
             canShoot = true;
         }
+        else {
+            canShoot = true;
+        }
+    
     }
 
     void Shoot()
     {
         Quaternion bulletRotation = Quaternion.Euler(firePoint.eulerAngles.x, firePoint.eulerAngles.y, firePoint.eulerAngles.z + 90);
         GameObject bullet = Instantiate(bulletPrefab, firePoint.position, bulletRotation);
+        bullet.GetComponent<Bullet>().damage = bulletDamage;
         Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
         Physics2D.IgnoreCollision(bullet.GetComponent<Collider2D>(), GetComponent<Collider2D>());
         rb.AddForce(firePoint.up * bulletForce, ForceMode2D.Impulse);
+        
     }
 
     void SetAmmogun()
     {
         barraAmmo.value = ammoGun;
         barraAmmo.GetComponentInChildren<Text>().text = "Infinite";
+        bulletDamage = 1;
 
     }
 
     void SetAmmoMachinegun() {
         barraAmmo.value = ammoMachineGun;
         barraAmmo.GetComponentInChildren<Text>().text = ammoMachineGun.ToString();
+        bulletDamage = 1;
 
     }
 
@@ -177,6 +189,7 @@ public class Shooting : MonoBehaviour
     {
         barraAmmo.value = ammoShotGun;
         barraAmmo.GetComponentInChildren<Text>().text = ammoShotGun.ToString();
+        bulletDamage = 5;
     }
 
 }
