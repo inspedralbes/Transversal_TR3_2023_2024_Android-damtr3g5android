@@ -124,7 +124,7 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 4954145655286242081, guid: 44e238a9acb41c24e93ff5627a09494a, type: 3}
         m_TargetAssemblyTypeName: Shooting, Assembly-CSharp
         m_MethodName: ChangeFireRate
         m_Mode: 4
@@ -325,7 +325,7 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 4954145655286242081, guid: 44e238a9acb41c24e93ff5627a09494a, type: 3}
         m_TargetAssemblyTypeName: Shooting, Assembly-CSharp
         m_MethodName: ChangeFireRate
         m_Mode: 4
@@ -474,7 +474,7 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 4954145655286242081, guid: 44e238a9acb41c24e93ff5627a09494a, type: 3}
         m_TargetAssemblyTypeName: Shooting, Assembly-CSharp
         m_MethodName: ChangeFireRate
         m_Mode: 4
