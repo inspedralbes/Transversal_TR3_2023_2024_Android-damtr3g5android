@@ -9,7 +9,7 @@ public class Shooting : MonoBehaviour
     public GameObject bulletPrefab;
     public float bulletForce = 20f;
     public VariableJoystick joystick;
-    [SerializeField] private Slider barraAmmo;
+    [SerializeField] private Slider barraAmmo;    
 
     public float fireRate = 0.5f; // Tiempo entre disparos en segundos
     private float timeSinceLastShot = 0f; // Tiempo transcurrido desde el último disparo
@@ -18,11 +18,13 @@ public class Shooting : MonoBehaviour
     private int ammoShotGun = 0;
     private bool canShoot = true;
     private string weaponSelected= "";
+    
 
     private void Start()
     {
         barraAmmo.maxValue = ammoGun;
-        barraAmmo.value = ammoGun;
+        SetAmmogun();
+       
     }
 
 
@@ -55,12 +57,13 @@ public class Shooting : MonoBehaviour
     {
         if (newWeapon.Equals("Gun"))
         {
-            barraAmmo.value = ammoGun;
+            
             fireRate = 0.5f;
             weaponSelected = newWeapon;
+            SetAmmogun();
         }
         else if (newWeapon.Equals("Machinegun")) {
-            barraAmmo.value = ammoMachineGun;
+            
             fireRate = 0.1f;
             if (ammoMachineGun == 0)
             {
@@ -69,12 +72,13 @@ public class Shooting : MonoBehaviour
             else {
                 canShoot = true;
             }
+            SetAmmoMachinegun();
             weaponSelected = newWeapon;
 
         }
         else if (newWeapon.Equals("Shotgun"))
         {
-            barraAmmo.value = ammoShotGun;
+            
             fireRate = 0.7f;
             if (ammoShotGun == 0)
             {
@@ -84,6 +88,7 @@ public class Shooting : MonoBehaviour
             {
                 canShoot = true;
             }
+            SetAmmoShotgun();
             weaponSelected = newWeapon;
 
         }
@@ -95,13 +100,21 @@ public class Shooting : MonoBehaviour
         if (numero == 1)
         {
             ammoMachineGun += 20;
+            if (weaponSelected.Equals("Machinegun"))
+            {
+                SetAmmoMachinegun();
+            }
             Debug.Log("Municion Machinegun +20");
+
 
         }
         else if (numero == 2)
         {
             ammoShotGun += 10;
-            Debug.Log("Municion Shotgun +10");
+            if (weaponSelected.Equals("Shotgun")) { 
+                SetAmmoShotgun();
+            }
+            Debug.Log("Municion Shotgun +10");            
 
         }
 
@@ -111,13 +124,13 @@ public class Shooting : MonoBehaviour
     {
         if (weaponSelected.Equals("Machinegun")&& ammoMachineGun>0) {
             ammoMachineGun--;
-            barraAmmo.value = ammoMachineGun;
+            SetAmmoMachinegun();
             Debug.Log("Municion MachineGun: "+ammoMachineGun);
         }
         else if (weaponSelected.Equals("Shotgun")&& ammoShotGun>0)
         {
             ammoShotGun--;
-            barraAmmo.value = ammoShotGun;
+            SetAmmoShotgun();
             Debug.Log("Municion Shotgun: "+ammoShotGun);
         }
     }
@@ -146,4 +159,24 @@ public class Shooting : MonoBehaviour
         Physics2D.IgnoreCollision(bullet.GetComponent<Collider2D>(), GetComponent<Collider2D>());
         rb.AddForce(firePoint.up * bulletForce, ForceMode2D.Impulse);
     }
+
+    void SetAmmogun()
+    {
+        barraAmmo.value = ammoGun;
+        barraAmmo.GetComponentInChildren<Text>().text = "Infinite";
+
+    }
+
+    void SetAmmoMachinegun() {
+        barraAmmo.value = ammoMachineGun;
+        barraAmmo.GetComponentInChildren<Text>().text = ammoMachineGun.ToString();
+
+    }
+
+    void SetAmmoShotgun()
+    {
+        barraAmmo.value = ammoShotGun;
+        barraAmmo.GetComponentInChildren<Text>().text = ammoShotGun.ToString();
+    }
+
 }
