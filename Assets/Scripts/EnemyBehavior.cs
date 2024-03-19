@@ -11,7 +11,7 @@ public class EnemyBehavior : MonoBehaviour
 
 
     [SerializeField] private float attackRate = 0.5f; // Tiempo entre ataques en segundos
-    [SerializeField] private float timeSinceLastAttack = 0f; // Tiempo transcurrido desde el último ataque
+    private float timeSinceLastAttack = 0f; // Tiempo transcurrido desde el último ataque
 
 
     private void Start()
