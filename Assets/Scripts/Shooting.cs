@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class Shooting : MonoBehaviour
 {
+    [Header("Class Refereneces")]
+    [SerializeField]
+    private NetworkIdentity networkIdentity;
+
     public Transform firePoint;
     public GameObject bulletPrefab;
     public float bulletForce = 20f;

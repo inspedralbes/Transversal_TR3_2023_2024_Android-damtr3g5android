@@ -36,7 +36,7 @@ namespace Cainos.PixelArtTopDown_Basic
         }
 
 
-        private void Update()
+        private void FixedUpdate()
         {
             if (networkIdentity.IsControlling())
             {
@@ -73,7 +73,7 @@ namespace Cainos.PixelArtTopDown_Basic
 
                 if (horizontalMove < 0)
                 {
-
+                    Debug.Log("A la izquierda");
                     animator.SetFloat("horizontal", horizontalMove);
 
                 }
@@ -98,10 +98,6 @@ namespace Cainos.PixelArtTopDown_Basic
                 movementJoystick = new Vector2(horizontalMove, verticallMove).normalized * speedJoystick;
                 animator.SetFloat("speed", movementJoystick.sqrMagnitude);
             }
-            
-        }
-        private void FixedUpdate()
-        {
             if (movement != Vector2.zero)
             {
                 rigidBody.MovePosition(rigidBody.position + movement * speed * Time.fixedDeltaTime);
@@ -110,7 +106,9 @@ namespace Cainos.PixelArtTopDown_Basic
             {
                 rigidBody.MovePosition(rigidBody.position + movementJoystick * Time.fixedDeltaTime);
             }
+
         }
+
 
         /*void UpdateDirection(Vector2 movement)
         {

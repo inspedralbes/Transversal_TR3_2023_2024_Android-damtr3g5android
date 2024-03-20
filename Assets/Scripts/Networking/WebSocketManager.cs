@@ -40,6 +40,7 @@ namespace Networking
         public event SocketEvent OnClose;
         public event SocketEvent OnDisconnected;
         public event SocketEvent OnUpdatePosition;
+        public event SocketEvent OnUpdateAnimation;
 
         // Start is called before the first frame update
         void Start()
@@ -76,6 +77,9 @@ namespace Networking
                             break;
                         case "updatePosition":
                             OnUpdatePosition?.Invoke(data);
+                            break;
+                        case "updateAnimation":
+                            OnUpdateAnimation?.Invoke(data);
                             break;
                         // Add more cases as needed for different event types
                         default:
@@ -115,15 +119,17 @@ namespace Networking
             OnSpawn += (data) =>
             {
                 string id = data["id"].ToString().RemoveQuotes();
-                Debug.Log("Spawneado 1");
                 actionsToExecuteOnMainThread.Enqueue(() =>
                 {
-                    Debug.Log("Spawneado");
                     GameObject go = Instantiate(playerPrefab, networkContainer);
                     go.name = string.Format("Player({0})", id);
                     NetworkIdentity ni = go.GetComponent<NetworkIdentity>();
                     ni.SetControllerId(id);
                     ni.SetSocketReference(this);
+                    Player player = new Player();
+                    player.id = id;
+                    player.position = new Position();
+                    player.animator = new AnimatorData();
                     serverObjects.Add(id, ni);
                 });
 
@@ -141,10 +147,42 @@ namespace Networking
                 string id = data["id"].ToString().RemoveQuotes();
                 float x = data["position"]["x"].Value<float>();
                 float y = data["position"]["y"].Value<float>();
-                Debug.Log("ID en movimiento " + id);
-                NetworkIdentity ni = serverObjects[id];
-                ni.transform.position = new Vector3(x, y, 0);
+                actionsToExecuteOnMainThread.Enqueue(() => {
+                    if (serverObjects.TryGetValue(id, out NetworkIdentity ni))
+                    {
+                        ni.transform.position = new Vector3(x, y, 0);
+
+                    }
+                });
             };
+            OnUpdateAnimation += (data) =>
+            {
+                string id = data["id"].ToString().RemoveQuotes();
+                float speed = data["animator"]["speed"].Value<float>();
+                float vertical = data["animator"]["vertical"].Value<float>();
+                float horizontal = data["animator"]["horizontal"].Value<float>();
+                float lastVertical = data["animator"]["lastVertical"].Value<float>();
+                float lastHorizontal = data["animator"]["lastHorizontal"].Value<float>();
+
+                actionsToExecuteOnMainThread.Enqueue(() =>
+                {
+                    if (serverObjects.TryGetValue(id, out NetworkIdentity ni))
+                    {
+                        // Update animator parameters for the player
+                        // Assuming you have a script attached to the player prefab that manages the animator
+                        Animator animator = ni.GetComponent<Animator>();
+                        if (animator != null)
+                        {
+                            animator.SetFloat("speed", speed);
+                            animator.SetFloat("vertical", vertical);
+                            animator.SetFloat("horizontal", horizontal);
+                            animator.SetFloat("lastVertical", lastVertical);
+                            animator.SetFloat("lastHorizontal", lastHorizontal);
+                        }
+                    }
+                });
+            };
+
         }
         public void Send(string message)
         {
@@ -219,10 +257,20 @@ namespace Networking
     public class Player {
         public string id;
         public Position position;
+        public AnimatorData animator;
     }
     [Serializable]
     public class Position {
         public float x;
         public float y;
+    }
+    [Serializable]
+    public class AnimatorData
+    {
+        public float speed;
+        public float vertical;
+        public float horizontal;
+        public float lastVertical;
+        public float lastHorizontal;
     }
 }
