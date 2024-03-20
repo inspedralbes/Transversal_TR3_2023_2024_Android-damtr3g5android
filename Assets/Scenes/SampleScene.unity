@@ -2032,6 +2032,22 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Enemy
       objectReference: {fileID: 0}
+    - target: {fileID: 7435991255447983711, guid: f0c8de45bc8491d4a90a229e634ab4d9, type: 3}
+      propertyPath: m_Mass
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8559396535151393801, guid: f0c8de45bc8491d4a90a229e634ab4d9, type: 3}
+      propertyPath: m_Radius
+      value: 0.36765337
+      objectReference: {fileID: 0}
+    - target: {fileID: 8559396535151393801, guid: f0c8de45bc8491d4a90a229e634ab4d9, type: 3}
+      propertyPath: m_Offset.x
+      value: -0.0064558983
+      objectReference: {fileID: 0}
+    - target: {fileID: 8559396535151393801, guid: f0c8de45bc8491d4a90a229e634ab4d9, type: 3}
+      propertyPath: m_Offset.y
+      value: 0.009683877
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
