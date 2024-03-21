@@ -194,3 +194,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hitEffect: {fileID: 12554571824459196, guid: 931e4e72d725d3c4a9951a51a53ca14a, type: 3}
+  destroyLayers:
+    serializedVersion: 2
+    m_Bits: 64

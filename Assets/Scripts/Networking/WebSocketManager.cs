@@ -5,6 +5,8 @@ using System.Collections.Concurrent;
 using UnityEngine;
 using WebSocketSharp;
 using Newtonsoft.Json.Linq;
+using Utilities;
+using Scriptable;
 namespace Networking
 {
     public class SocketManager : MonoBehaviour
@@ -15,6 +17,11 @@ namespace Networking
 
         [SerializeField]
         private GameObject playerPrefab;
+        [SerializeField]
+        private ServerObjects serverSpawnables;
+
+        [SerializeField]
+        private GameObject bulletPrefab;
 
         public static string ClientID { get; private set; }
 
@@ -41,6 +48,8 @@ namespace Networking
         public event SocketEvent OnDisconnected;
         public event SocketEvent OnUpdatePosition;
         public event SocketEvent OnUpdateAnimation;
+        public event SocketEvent OnServerSpawn;
+        public event SocketEvent OnServerUnSpawn;
 
         // Start is called before the first frame update
         void Start()
@@ -80,6 +89,12 @@ namespace Networking
                             break;
                         case "updateAnimation":
                             OnUpdateAnimation?.Invoke(data);
+                            break;
+                        case "serverSpawn":
+                            OnServerSpawn?.Invoke(data);
+                            break;
+                        case "serverUnspawn":
+                            OnServerUnSpawn?.Invoke(data);
                             break;
                         // Add more cases as needed for different event types
                         default:
@@ -138,7 +153,7 @@ namespace Networking
             {
                 string id = data["id"].ToString().RemoveQuotes();
 
-                GameObject go = serverObjects[id].gameObject; ;
+                GameObject go = serverObjects[id].gameObject;
                 Destroy(go);
                 serverObjects.Remove(ClientID);
             };
@@ -182,8 +197,52 @@ namespace Networking
                     }
                 });
             };
+            OnServerSpawn += (data) =>
+            {
+                string name = data["name"].Value<string>();
+                string id = data["id"].ToString().RemoveQuotes();
+                float x = data["position"]["x"].Value<float>();
+                float y = data["position"]["y"].Value<float>();
+                
+//Debug.LogFormat("Server want us to spawn a '{0}'", name);
+
+                if (!serverObjects.ContainsKey(id)) {
+
+                    ServerObjectData sod = serverSpawnables.GetObjectByName(name);
+                    GameObject spawnedObject = Instantiate(sod.Prefab, networkContainer);
+                    Debug.Log("BALAS");
+                    spawnedObject.transform.position = new Vector3(x, y, 0);
+                    
+                    var ni = spawnedObject.GetComponent<NetworkIdentity>();
+                    ni.SetControllerId(id);
+                    ni.SetSocketReference(this);
+                    
+
+                    //If applies direction for bullet
+                    if (name == "Bullet") {
+                        float directionX = data["direction"]["x"].Value<float>();
+                        float directionY = data["direction"]["y"].Value<float>();
+
+                        float rot = Mathf.Atan2(directionY, directionX) * Mathf.Rad2Deg;
+                        Vector3 currentRotation = new Vector3(0, 0, rot-90);
+                        spawnedObject.transform.rotation = Quaternion.Euler(currentRotation);
+
+                    }
+                    serverObjects.Add(id, ni);
+
+                }
+
+            };
+            OnServerUnSpawn += (data) =>
+            {
+                string id = data["id"].ToString().RemoveQuotes();
+                NetworkIdentity ni = serverObjects[id];
+                serverObjects.Remove(id);
+                DestroyImmediate(ni.gameObject);
+            };
 
         }
+
         public void Send(string message)
         {
             if (socket != null && socket.ReadyState == WebSocketState.Open)
@@ -204,37 +263,7 @@ namespace Networking
             {
                 action.Invoke();
             }
-            /*
-            if (socket == null || Time.time < nextUpdateTime)
-            {
-                return;
-            }
-            nextUpdateTime = Time.time + updateRate;
-
-            //If player is correctly configured, begin sending player data to server
-            if (player != null && playerData.id != "")
-            {
-                //Grab player current position and rotation data
-                playerData.xPos = player.transform.position.x;
-                playerData.yPos = player.transform.position.y;
-
-                System.DateTime epochStart = new System.DateTime(1970, 1, 1, 8, 0, 0, System.DateTimeKind.Utc);
-                double timestamp = (System.DateTime.UtcNow - epochStart).TotalSeconds;
-                //Debug.Log(timestamp);
-                playerData.timestamp = timestamp;
-
-                string playerDataJSON = JsonUtility.ToJson(playerData);
-                socket.Send(playerDataJSON);
-            }
-            else
-            {
-            }
-            if (Input.GetKeyDown(KeyCode.M))
-            {
-                string messageJSON = "{\"message\": \"Some Message From Client\"}";
-                socket.Send(messageJSON);
-            }
-            */
+            
         }
 
         private void OnDestroy()
@@ -246,13 +275,7 @@ namespace Networking
 
 
     }
-    public static class StringExtensions
-    {
-        public static string RemoveQuotes(this string value)
-        {
-            return value.Replace("\"", "");
-        }
-    }
+ 
     [Serializable]
     public class Player {
         public string id;
@@ -272,5 +295,12 @@ namespace Networking
         public float horizontal;
         public float lastVertical;
         public float lastHorizontal;
+    }
+    [Serializable]
+    public class BulletData
+    {
+        public string id;
+        public Position position;
+        public Position direction;
     }
 }

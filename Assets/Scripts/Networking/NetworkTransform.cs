@@ -16,8 +16,8 @@ public class NetworkTransform : MonoBehaviour
 
     private float stillCounter = 0;
     //Updat tunes
-    private const float minimumMovementThreshold = 0.001f;
-    private const float forceUpdateTime = 0.001f;
+    private const float minimumMovementThreshold = 0.01f;
+    private const float forceUpdateTime = 0.05f;
     private float timeSinceLastUpdate = 0.0f;
 
     // Start is called before the first frame update
@@ -26,9 +26,14 @@ public class NetworkTransform : MonoBehaviour
         networkIdentity = GetComponent<NetworkIdentity>();
         oldPosition = transform.position;
         player = new Player();
-        player.position = new Position();
-        player.position.x = 0;
-        player.position.y = 0;
+        player = new Player
+        {
+            position = new Position
+            {
+                x = transform.position.x,
+                y = transform.position.y
+            }
+        };
 
         if (!networkIdentity.IsControlling()) {
             enabled = false;
@@ -41,8 +46,8 @@ public class NetworkTransform : MonoBehaviour
         if (networkIdentity.IsControlling())
         {
             timeSinceLastUpdate += Time.deltaTime;
-
             float distanceMoved = Vector3.Distance(transform.position, oldPosition);
+
             if (distanceMoved > minimumMovementThreshold || timeSinceLastUpdate >= forceUpdateTime)
             {
                 sendData();
@@ -51,13 +56,13 @@ public class NetworkTransform : MonoBehaviour
             }
         }
     }
+
     private void sendData() {
         
         player.id = networkIdentity.GetId();
         player.position.x = Mathf.Round(transform.position.x * 1000.0f) / 1000.0f;
         player.position.y = Mathf.Round(transform.position.y * 1000.0f) / 1000.0f;
         string playerJson = JsonUtility.ToJson(player);
-        Debug.Log("Data enviada: "+playerJson);
         JObject data = new JObject
         {
             ["event"] = "updatePosition",

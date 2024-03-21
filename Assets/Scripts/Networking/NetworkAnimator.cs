@@ -30,6 +30,7 @@ public class NetworkAnimator : MonoBehaviour
         player = new Player();
         player.animator = new AnimatorData();
 
+        oldAnimatorData = new AnimatorData();
         UpdateAnimatorData(ref oldAnimatorData);
 
         if (!networkIdentity.IsControlling())

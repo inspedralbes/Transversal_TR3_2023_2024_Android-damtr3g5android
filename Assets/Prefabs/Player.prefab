@@ -223,10 +223,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a00a4c58ece4c364eb3347d394b710d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 3
-  speedJoystick: 3
+  speed: 20
+  speedJoystick: 20
+  firePoint: {fileID: 3110094685913344116}
   networkIdentity: {fileID: 5925534106139035188}
-  joystick: {fileID: 2913826928807209794, guid: 4dcbb17139fd3cc4fa45bf2891d83f21, type: 3}
+  movingJoystick: {fileID: 2913826928807209794, guid: 4dcbb17139fd3cc4fa45bf2891d83f21, type: 3}
+  fireJoystick: {fileID: 4993164406901102352, guid: 45d91e08a4a539444a5b11b07ec83539, type: 3}
 --- !u!95 &5274998221996617023
 Animator:
   serializedVersion: 5

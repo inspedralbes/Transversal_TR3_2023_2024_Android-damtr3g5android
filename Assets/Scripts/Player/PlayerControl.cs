@@ -1,6 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Utilities;
+using Newtonsoft.Json.Linq;
+using Networking;
 
 namespace Cainos.PixelArtTopDown_Basic
 {
@@ -8,9 +11,10 @@ namespace Cainos.PixelArtTopDown_Basic
     {
         [Header("Data")]
         [SerializeField]
-        public float speed =3;
+        public float speed = 3;
 
-        public float speedJoystick=3;
+        public float speedJoystick = 3;
+        public Transform firePoint;
 
         [Header("Class Refereneces")]
         [SerializeField]
@@ -20,17 +24,26 @@ namespace Cainos.PixelArtTopDown_Basic
         float horizontalMove = 0;
         float verticallMove = 0;
         private Rigidbody2D rigidBody;
-        public Joystick joystick;
+        public Joystick movingJoystick;
+        public VariableJoystick fireJoystick;
 
 
 
         Vector2 movement;
         Vector2 movementJoystick;
 
+        //Shooting
+        private Cooldown shootingCooldown;
+        private BulletData bulletData;
+
 
 
         private void Start()
         {
+            shootingCooldown = new Cooldown(1);
+            bulletData = new BulletData();
+            bulletData.position = new Position();
+            bulletData.direction = new Position();
             animator = GetComponent<Animator>();
             rigidBody = GetComponent<Rigidbody2D>();
         }
@@ -41,13 +54,8 @@ namespace Cainos.PixelArtTopDown_Basic
             if (networkIdentity.IsControlling())
             {
                 checkMovement();
+                checkShooting();
             }
-            
-               
-
-                
-            
-
 
         }
         public void checkMovement()
@@ -67,8 +75,8 @@ namespace Cainos.PixelArtTopDown_Basic
             }
             else
             {
-                horizontalMove = joystick.Horizontal * speed;
-                verticallMove = joystick.Vertical * speed;
+                horizontalMove = fireJoystick.Horizontal * speed;
+                verticallMove = fireJoystick.Vertical * speed;
 
 
                 if (horizontalMove < 0)
@@ -108,25 +116,51 @@ namespace Cainos.PixelArtTopDown_Basic
             }
 
         }
-
-
-        /*void UpdateDirection(Vector2 movement)
+        public void checkShooting()
         {
-            if (Mathf.Abs(movement.x) > Mathf.Abs(movement.y))
+
+            shootingCooldown.CooldownUpdate();
+            Vector3 joystickPosition = new Vector3(fireJoystick.Horizontal, fireJoystick.Vertical, 0f);
+
+            // Verificar si el joystick está en el centro
+            /*
+            if (fireJoystick.Horizontal == 0f && fireJoystick.Vertical == 0f)
             {
-                // Horizontal movement
-                animator.SetInteger("Direction", movement.x > 0 ? 1 : 3); // Right = 1, Left = 3
+                return;
             }
-            else
+            */
+
+            // Verificar si ha pasado suficiente tiempo desde el último disparo
+            if (!shootingCooldown.IsOnCooldown() && Input.GetKeyDown(KeyCode.R))
             {
-                // Vertical movement
-                animator.SetInteger("Direction", movement.y > 0 ? 0 : 2); // Up = 0, Down = 2
+                // Disparar y actualizar el tiempo del último disparo
+                
+                shootingCooldown.StartCooldown();
+                Shoot();
             }
-        }*/
+            void Shoot()
+            {
+                bulletData.position.x = firePoint.position.x.TwoDecimals();
+                bulletData.position.y = firePoint.position.y.TwoDecimals();
+                bulletData.direction.x = firePoint.up.x;
+                bulletData.direction.x = firePoint.up.y;
+                string bulletJson = JsonUtility.ToJson(bulletData);
+                JObject data = new JObject
+                {
+                    ["event"] = "fireBullet",
+                    ["playerID"] = networkIdentity.GetId(),
+                    ["bulletdata"] = JObject.Parse(bulletJson)
+                };
+                string message = data.ToString(Newtonsoft.Json.Formatting.None);
 
+                networkIdentity.GetSocket().Send(message);
+                /* Quaternion bulletRotation = Quaternion.Euler(firePoint.eulerAngles.x, firePoint.eulerAngles.y, firePoint.eulerAngles.z + 90);
+             GameObject bullet = Instantiate(bulletPrefab, firePoint.position, bulletRotation);
+             Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
+             Physics2D.IgnoreCollision(bullet.GetComponent<Collider2D>(), GetComponent<Collider2D>());
+             rb.AddForce(firePoint.up * bulletForce, ForceMode2D.Impulse);*/
+            }
 
-
-
-
+        }
     }
 }
