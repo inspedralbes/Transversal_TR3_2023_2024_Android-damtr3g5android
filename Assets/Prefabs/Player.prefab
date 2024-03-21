@@ -151,8 +151,8 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
+  m_Mass: 60
+  m_LinearDrag: 4
   m_AngularDrag: 0.05
   m_GravityScale: 0
   m_Material: {fileID: 0}
@@ -162,9 +162,9 @@ Rigidbody2D:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!61 &3846353977145278273
 BoxCollider2D:
@@ -260,6 +260,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a829db0e397aca144b5bb75f4f3421ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  networkIdentity: {fileID: 5925534106139035188}
   firePoint: {fileID: 3110094685913344116}
   bulletPrefab: {fileID: 7255304489182159110, guid: 4107b527854c42a4f9a85225b83a17a9, type: 3}
   bulletForce: 20

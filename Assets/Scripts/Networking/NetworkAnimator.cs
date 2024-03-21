@@ -12,19 +12,25 @@ public class NetworkAnimator : MonoBehaviour
     [GreyOut]
     private Vector3 oldPosition;
     private NetworkIdentity networkIdentity;
+    private AnimatorData oldAnimatorData;
     private Player player;
 
     public Animator animator;
 
-    private float stillCounter = 0;
+    private const float updateInterval = 1.0f; // Interval in seconds to force an update
+    private float timeSinceLastUpdate = 0.0f;
 
     // Start is called before the first frame update
     void Start()
     {
         networkIdentity = GetComponent<NetworkIdentity>();
+        animator = GetComponent<Animator>();
+
         oldPosition = transform.position;
         player = new Player();
         player.animator = new AnimatorData();
+
+        UpdateAnimatorData(ref oldAnimatorData);
 
         if (!networkIdentity.IsControlling())
         {
@@ -37,38 +43,52 @@ public class NetworkAnimator : MonoBehaviour
     {
         if (networkIdentity.IsControlling())
         {
-            if (oldPosition != transform.position)
+            timeSinceLastUpdate += Time.deltaTime;
+
+            bool hasSignificantMovement = Vector3.Distance(transform.position, oldPosition) > 0.05f;
+            bool hasAnimationChanged = CheckAnimatorDataChanged();
+
+            if (hasSignificantMovement || hasAnimationChanged || timeSinceLastUpdate >= updateInterval)
             {
+                SendData();
                 oldPosition = transform.position;
-                stillCounter = 0;
-                sendData();
-            }
-            else
-            {
-                stillCounter += Time.deltaTime;
-                if (stillCounter >= 1)
-                {
-                    stillCounter = 0;
-                    sendData();
-                }
+                UpdateAnimatorData(ref oldAnimatorData); // Update oldAnimatorData with the latest values
+                timeSinceLastUpdate = 0.0f;
             }
         }
     }
-    private void sendData()
+    private void UpdateAnimatorData(ref AnimatorData animatorData)
     {
-        player.id = networkIdentity.GetId();
-        player.animator.speed = animator.GetFloat("speed");
-        player.animator.vertical = animator.GetFloat("vertical");
-        player.animator.horizontal = animator.GetFloat("horizontal");
-        player.animator.lastVertical = animator.GetFloat("lastVertical");
-        player.animator.lastHorizontal = animator.GetFloat("lastHorizontal");
+        animatorData.speed = animator.GetFloat("speed");
+        animatorData.vertical = animator.GetFloat("vertical");
+        animatorData.horizontal = animator.GetFloat("horizontal");
+        animatorData.lastVertical = animator.GetFloat("lastVertical");
+        animatorData.lastHorizontal = animator.GetFloat("lastHorizontal");
+    }
+    private bool CheckAnimatorDataChanged()
+    {
+        // This method checks if there has been a significant change in the animation parameters
+        return Mathf.Abs(oldAnimatorData.speed - animator.GetFloat("speed")) > 0.1f ||
+               Mathf.Abs(oldAnimatorData.vertical - animator.GetFloat("vertical")) > 0.1f ||
+               Mathf.Abs(oldAnimatorData.horizontal - animator.GetFloat("horizontal")) > 0.1f ||
+               Mathf.Abs(oldAnimatorData.lastVertical - animator.GetFloat("lastVertical")) > 0.1f ||
+               Mathf.Abs(oldAnimatorData.lastHorizontal - animator.GetFloat("lastHorizontal")) > 0.1f;
+    }
+    private void SendData()
+    {
+        AnimatorData currentData = new AnimatorData();
+        UpdateAnimatorData(ref currentData);
 
-        string playerJson = JsonUtility.ToJson(player);
         JObject data = new JObject
         {
             ["event"] = "updateAnimation",
-            ["data"] = JObject.Parse(playerJson)
+            ["data"] = new JObject
+            {
+                ["id"] = networkIdentity.GetId(),
+                ["animator"] = JObject.FromObject(currentData)
+            }
         };
+
         string message = data.ToString(Newtonsoft.Json.Formatting.None);
         networkIdentity.GetSocket().Send(message);
     }

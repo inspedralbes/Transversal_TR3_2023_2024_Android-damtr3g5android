@@ -15,7 +15,11 @@ public class NetworkTransform : MonoBehaviour
     private Player player;
 
     private float stillCounter = 0;
-   
+    //Updat tunes
+    private const float minimumMovementThreshold = 0.001f;
+    private const float forceUpdateTime = 0.001f;
+    private float timeSinceLastUpdate = 0.0f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -34,27 +38,26 @@ public class NetworkTransform : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (networkIdentity.IsControlling()) {
-            if (oldPosition != transform.position)
+        if (networkIdentity.IsControlling())
+        {
+            timeSinceLastUpdate += Time.deltaTime;
+
+            float distanceMoved = Vector3.Distance(transform.position, oldPosition);
+            if (distanceMoved > minimumMovementThreshold || timeSinceLastUpdate >= forceUpdateTime)
             {
-                oldPosition = transform.position;
-                stillCounter = 0;
                 sendData();
-            }
-            else {
-                stillCounter += Time.deltaTime;
-                if (stillCounter >= 1) {
-                    stillCounter = 0;
-                    sendData();
-                }
+                oldPosition = transform.position;
+                timeSinceLastUpdate = 0.0f;
             }
         }
     }
     private void sendData() {
+        
         player.id = networkIdentity.GetId();
         player.position.x = Mathf.Round(transform.position.x * 1000.0f) / 1000.0f;
         player.position.y = Mathf.Round(transform.position.y * 1000.0f) / 1000.0f;
         string playerJson = JsonUtility.ToJson(player);
+        Debug.Log("Data enviada: "+playerJson);
         JObject data = new JObject
         {
             ["event"] = "updatePosition",
