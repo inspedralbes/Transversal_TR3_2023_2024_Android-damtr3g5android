@@ -8,6 +8,8 @@ TagManager:
   - Enemy
   - Chest
   - Life
+  - Musica
+  - Sonidos
   layers:
   - Default
   - TransparentFX
