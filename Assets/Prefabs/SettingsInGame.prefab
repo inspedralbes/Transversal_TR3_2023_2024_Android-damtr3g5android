@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7879500286374370745}
   - component: {fileID: 8219072962657074309}
   m_Layer: 0
-  m_Name: Settings
+  m_Name: SettingsInGame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -46,10 +46,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   volumenMusica: {fileID: 0}
   volumenSonidos: {fileID: 0}
-  muteMusica: {fileID: 0}
-  muteSonidos: {fileID: 0}
-  sonidos:
-  - {fileID: 1119045856855977284, guid: c979869825f45d241a6e964418ff575c, type: 3}
-  - {fileID: 2665100301622563570, guid: 7b93e558361c2ca46ad6535af9825529, type: 3}
+  sonidos: []
   musica:
-  - {fileID: 8228000274526259088, guid: 83b2d067f7c44a64399282b3e708671f, type: 3}
+  - {fileID: 0}

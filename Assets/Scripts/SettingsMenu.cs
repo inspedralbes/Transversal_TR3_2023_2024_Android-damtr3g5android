@@ -32,8 +32,9 @@ public class SettingsMenu : MonoBehaviour
         {
             if (!muteMusica.isOn)
             {
-                // Si el toggle de muteo de la música está activado, establecer el volumen a 0
+                // Si el toggle de muteo de la música está desactivado, establecer el volumen a 0
                 music.GetComponent<AudioSource>().volume = 0;
+                PlayerPrefs.SetFloat("volumenMusica", 0);
             }
             else
             {
@@ -46,8 +47,9 @@ public class SettingsMenu : MonoBehaviour
         {
             if (!muteSonidos.isOn)
             {
-                // Si el toggle de muteo de los sonidos está activado, establecer el volumen a 0
+                // Si el toggle de muteo de los sonidos está desactivado, establecer el volumen a 0
                 sonido.GetComponent<AudioSource>().volume = 0;
+                PlayerPrefs.SetFloat("volumenSonidos", 0);
             }
             else
             {
@@ -82,26 +84,6 @@ public class SettingsMenu : MonoBehaviour
 
     }
 
-    /*public void MuteVolumenMusica(bool musica)
-    {
-        ultimoVolumenMusica = PlayerPrefs.GetFloat("volumenMusica");
-        if (!musica) {
-            PlayerPrefs.SetFloat("volumenMusica", 0);
-        }
-        else
-            PlayerPrefs.SetFloat("volumenMusica", ultimoVolumenMusica);
-    }
-
-    public void MuteVolumenSonidos(bool sonido)
-    {
-        ultimoVolumenSonidos = PlayerPrefs.GetFloat("volumenSonidos");
-        if (!sonido)
-        {
-            PlayerPrefs.SetFloat("volumenSonidos", 0);
-        }
-        else
-            PlayerPrefs.SetFloat("volumenSonidos", ultimoVolumenSonidos);
-    }*/
 
 
 }
