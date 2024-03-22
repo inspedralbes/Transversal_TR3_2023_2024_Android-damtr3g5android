@@ -6,6 +6,8 @@ MonoImporter:
   defaultReferences:
   - networkContainer: {instanceID: 0}
   - playerPrefab: {fileID: 7099279590989803959, guid: 44e238a9acb41c24e93ff5627a09494a, type: 3}
+  - serverSpawnables: {fileID: 11400000, guid: c31322a0f7e557f4981be21247a2c787, type: 2}
+  - bulletPrefab: {fileID: 7255304489182159110, guid: 4107b527854c42a4f9a85225b83a17a9, type: 3}
   - player: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}

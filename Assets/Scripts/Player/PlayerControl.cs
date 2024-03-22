@@ -144,6 +144,7 @@ namespace Cainos.PixelArtTopDown_Basic
                 bulletData.position.y = firePoint.position.y.TwoDecimals();
                 bulletData.direction.x = firePoint.up.x;
                 bulletData.direction.x = firePoint.up.y;
+                bulletData.activator = SocketManager.ClientID;
                 string bulletJson = JsonUtility.ToJson(bulletData);
                 JObject data = new JObject
                 {

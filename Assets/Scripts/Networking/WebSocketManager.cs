@@ -62,13 +62,13 @@ namespace Networking
             //WebSocket onMessage function
             socket.OnMessage += (sender, e) =>
             {
-
                 //If received data is type text...
                 if (e.IsText)
                 {
                     JObject message = JObject.Parse(e.Data);
                     string eventType = message["event"].ToString();
                     JObject data = (JObject)message["data"];
+                    
 
                     switch (eventType)
                     {
@@ -91,6 +91,7 @@ namespace Networking
                             OnUpdateAnimation?.Invoke(data);
                             break;
                         case "serverSpawn":
+                            
                             OnServerSpawn?.Invoke(data);
                             break;
                         case "serverUnspawn":
@@ -199,38 +200,69 @@ namespace Networking
             };
             OnServerSpawn += (data) =>
             {
-                string name = data["name"].Value<string>();
-                string id = data["id"].ToString().RemoveQuotes();
-                float x = data["position"]["x"].Value<float>();
-                float y = data["position"]["y"].Value<float>();
-                
-//Debug.LogFormat("Server want us to spawn a '{0}'", name);
-
-                if (!serverObjects.ContainsKey(id)) {
-
-                    ServerObjectData sod = serverSpawnables.GetObjectByName(name);
-                    GameObject spawnedObject = Instantiate(sod.Prefab, networkContainer);
-                    Debug.Log("BALAS");
-                    spawnedObject.transform.position = new Vector3(x, y, 0);
-                    
-                    var ni = spawnedObject.GetComponent<NetworkIdentity>();
-                    ni.SetControllerId(id);
-                    ni.SetSocketReference(this);
-                    
-
-                    //If applies direction for bullet
-                    if (name == "Bullet") {
-                        float directionX = data["direction"]["x"].Value<float>();
-                        float directionY = data["direction"]["y"].Value<float>();
-
-                        float rot = Mathf.Atan2(directionY, directionX) * Mathf.Rad2Deg;
-                        Vector3 currentRotation = new Vector3(0, 0, rot-90);
-                        spawnedObject.transform.rotation = Quaternion.Euler(currentRotation);
-
-                    }
-                    serverObjects.Add(id, ni);
-
+                if (data == null)
+                {
+                    Debug.LogError("Data is null for serverSpawn event.");
+                    return;
                 }
+
+                string name = data["name"]?.Value<string>();
+                string id = data["id"]?.ToString().RemoveQuotes();
+                if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(id))
+                {
+                    Debug.LogError("Name or ID is null or empty in serverSpawn data.");
+                    return;
+                }
+
+                if (!float.TryParse(data["position"]["x"]?.ToString(), out float x) ||
+                    !float.TryParse(data["position"]["y"]?.ToString(), out float y))
+                {
+                    Debug.LogError("Position data is invalid in serverSpawn data.");
+                    return;
+                }
+                actionsToExecuteOnMainThread.Enqueue(() =>
+                {
+                    if (!serverObjects.ContainsKey(id))
+                    {
+                        ServerObjectData sod = serverSpawnables?.GetObjectByName(name);
+                        if (sod == null || sod.Prefab == null)
+                        {
+                            Debug.LogError($"Prefab for {name} not found in ServerObjects.");
+                            return;
+                        }
+
+                        GameObject spawnedObject = Instantiate(sod.Prefab, new Vector3(x, y, 0), Quaternion.identity, networkContainer);
+                        if (spawnedObject == null)
+                        {
+                            Debug.LogError($"Failed to instantiate prefab for {name}.");
+                            return;
+                        }
+
+                        var ni = spawnedObject.GetComponent<NetworkIdentity>();
+                        if (ni == null)
+                        {
+                            Debug.LogError($"NetworkIdentity component not found on instantiated object for {name}.");
+                            return;
+                        }
+                        ni.SetControllerId(id);
+                        ni.SetSocketReference(this);
+
+                        if (name == "Bullet") {
+                            float directionX = data["direction"]["x"].Value<float>();
+                            float directionY = data["direction"]["y"].Value<float>();
+                            string activator = data["activator"].ToString().RemoveQuotes();
+
+                            float rot = Mathf.Atan2(directionY, directionX) * Mathf.Rad2Deg;
+                            Vector3 currentRotation = new Vector3(0, 0, rot);
+                            spawnedObject.transform.rotation = Quaternion.Euler(currentRotation);
+
+                            WhoActivatedMe whoActivatedMe = spawnedObject.GetComponent<WhoActivatedMe>();
+                            whoActivatedMe.SetActivator(activator);
+                        }
+
+                        serverObjects.Add(id, ni);
+                    }
+                });
 
             };
             OnServerUnSpawn += (data) =>
@@ -300,7 +332,13 @@ namespace Networking
     public class BulletData
     {
         public string id;
+        public string activator;
         public Position position;
         public Position direction;
+    }
+    [Serializable]
+    public class IDData
+    {
+        public string id;
     }
 }
