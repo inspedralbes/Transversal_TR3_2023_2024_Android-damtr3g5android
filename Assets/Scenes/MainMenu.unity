@@ -3036,7 +3036,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8231748078756012742, guid: 9d8ada780acc0564f833369564eb5c8f, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -20.201996
+      value: -20.201965
       objectReference: {fileID: 0}
     - target: {fileID: 8611162533183849761, guid: 9d8ada780acc0564f833369564eb5c8f, type: 3}
       propertyPath: m_AnchorMax.x
@@ -4701,6 +4701,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8219072962657074309, guid: ab17400996fcd14499341cda233a243b, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8219072962657074309, guid: ab17400996fcd14499341cda233a243b, type: 3}
       propertyPath: muteMusica
       value: 
       objectReference: {fileID: 1360458065}
@@ -4730,6 +4734,10 @@ PrefabInstance:
       objectReference: {fileID: 1764200839}
     - target: {fileID: 8219072962657074309, guid: ab17400996fcd14499341cda233a243b, type: 3}
       propertyPath: sonidos.Array.data[1]
+      value: 
+      objectReference: {fileID: 2089138597}
+    - target: {fileID: 8219072962657074309, guid: ab17400996fcd14499341cda233a243b, type: 3}
+      propertyPath: sonidos.Array.data[2]
       value: 
       objectReference: {fileID: 2089138597}
     m_RemovedComponents: []

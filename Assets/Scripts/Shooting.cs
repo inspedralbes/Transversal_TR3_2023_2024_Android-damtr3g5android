@@ -6,6 +6,8 @@ using UnityEngine.UI;
 public class Shooting : MonoBehaviour
 {
     public Transform firePoint;
+    [SerializeField] private AudioSource shotSound;
+    [SerializeField] private AudioSource shotGunSound;
     public GameObject bulletPrefab;
     public float bulletForce = 20f;
     public VariableJoystick joystick;
@@ -47,7 +49,7 @@ public class Shooting : MonoBehaviour
         {
             // Disparar y actualizar el tiempo del último disparo
             Shoot();
-            setAmmo();
+            setAmmo();           
             timeSinceLastShot = Time.time;
         }
         
@@ -167,7 +169,18 @@ public class Shooting : MonoBehaviour
         Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
         Physics2D.IgnoreCollision(bullet.GetComponent<Collider2D>(), GetComponent<Collider2D>());
         rb.AddForce(firePoint.up * bulletForce, ForceMode2D.Impulse);
-        
+
+        if (weaponSelected.Equals("Shotgun"))
+        {
+            // Reproducir el sonido de disparo de escopeta
+            shotGunSound.Play();
+        }
+        else
+        {
+            shotSound.Play();
+        }
+
+
     }
 
     void SetAmmogun()
