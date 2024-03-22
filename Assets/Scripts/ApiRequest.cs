@@ -47,59 +47,77 @@ public class ApiRequest : MonoBehaviour
             tex.filterMode = FilterMode.Point;
             Rect[] regions = defineRegions();
             sprites = MakeMultiSprite(tex, 48, regions);
-            Sprite[] walkSprites = new Sprite[9];
-            for(int i = 0; i< 9; i++)
+            Sprite[] walkUpSprites = new Sprite[9];
+            for (int i = 0; i < 9; i++)
             {
-                walkSprites[i] = sprites[i];
+                walkUpSprites[i] = sprites[i + (9 * 0)];
             }
-            AnimationClip animationClip = new AnimationClip();
-            animationClip.frameRate = 24; // Set your desired frame rate
+            Sprite[] walkLeftSprites = new Sprite[9];
+            for (int i = 0; i < 9; i++)
+            {
+                walkLeftSprites[i] = sprites[i + (9 * 1)];
+            }
+            Sprite[] walkDownSprites = new Sprite[9];
+            for (int i = 0; i < 9; i++)
+            {
+                walkDownSprites[i] = sprites[i + (9 * 2)];
+            }
+            Sprite[] walkRightSprites = new Sprite[9];
+            for (int i = 0; i < 9; i++)
+            {
+                walkRightSprites[i] = sprites[i + (9 * 3)];
+            }
+            
 
             // Create an array to hold keyframes for sprites
-            ObjectReferenceKeyframe[] keyframes = new ObjectReferenceKeyframe[walkSprites.Length];
+            createAnimationClip(walkUpSprites);
 
-            // Calculate time based on frame rate
-            float frameRate = animationClip.frameRate;
-            float totalTime = walkSprites.Length / frameRate;
-
-            // Add keyframes for each sprite
-            for (int i = 0; i < walkSprites.Length; i++)
-            {
-                float time = i / frameRate; // Adjusted time calculation
-
-                // Create ObjectReferenceKeyframe for each sprite
-                ObjectReferenceKeyframe spriteKeyframe = new ObjectReferenceKeyframe();
-                spriteKeyframe.time = time;
-                spriteKeyframe.value = walkSprites[i];
-
-                keyframes[i] = spriteKeyframe;
-            }
-
-            // Create an animation curve using the keyframes
-            AnimationUtility.SetObjectReferenceCurve(animationClip, new EditorCurveBinding
-            {
-                type = typeof(SpriteRenderer),
-                path = "",
-                propertyName = "m_Sprite"
-            }, keyframes);
-
-            // Save the AnimationClip
-            string path = "Assets/Animations/"; // Set your desired save path
-            AssetDatabase.CreateAsset(animationClip, path + "SpriteAnimation.anim");
-
-
-
-            AnimatorOverrideController aoc = new AnimatorOverrideController(animator.runtimeAnimatorController);
-            var anims = new List<KeyValuePair<AnimationClip, AnimationClip>>();
-            foreach (var a in aoc.animationClips)
-            {
-                Debug.Log(animationClip);
-                anims.Add(new KeyValuePair<AnimationClip, AnimationClip>(a, animationClip));
-            }
-            aoc.ApplyOverrides(anims);
-            animator.runtimeAnimatorController = aoc;
-            
         }
+    }
+
+    private void createAnimationClip(Sprite[] walkUpSprites)
+    {
+        AnimationClip animationClip = new AnimationClip();
+        animationClip.frameRate = 24; // Set your desired frame rate
+        ObjectReferenceKeyframe[] keyframes = new ObjectReferenceKeyframe[walkUpSprites.Length];
+
+        // Calculate time based on frame rate
+        float frameRate = animationClip.frameRate;
+        float totalTime = walkUpSprites.Length / frameRate;
+
+        // Add keyframes for each sprite
+        for (int i = 0; i < walkUpSprites.Length; i++)
+        {
+            float time = i / frameRate; // Adjusted time calculation
+
+            // Create ObjectReferenceKeyframe for each sprite
+            ObjectReferenceKeyframe spriteKeyframe = new ObjectReferenceKeyframe();
+            spriteKeyframe.time = time;
+            spriteKeyframe.value = walkUpSprites[i];
+
+            keyframes[i] = spriteKeyframe;
+        }
+
+        // Create an animation curve using the keyframes
+        AnimationUtility.SetObjectReferenceCurve(animationClip, new EditorCurveBinding
+        {
+            type = typeof(SpriteRenderer),
+            path = "",
+            propertyName = "m_Sprite"
+        }, keyframes);
+
+        // Save the AnimationClip
+        string path = "Assets/Animations/"; // Set your desired save path
+        AssetDatabase.CreateAsset(animationClip, path + "walkUpAnimation.anim");
+
+        AnimatorOverrideController aoc = new AnimatorOverrideController(animator.runtimeAnimatorController);
+        var anims = new List<KeyValuePair<AnimationClip, AnimationClip>>();
+        foreach (var a in aoc.animationClips)
+        {
+            anims.Add(new KeyValuePair<AnimationClip, AnimationClip>(a, animationClip));
+        }
+        aoc.ApplyOverrides(anims);
+        animator.runtimeAnimatorController = aoc;
     }
 
     private Rect[] defineRegions()
