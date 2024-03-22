@@ -235,7 +235,13 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7064369059421299695, guid: 795c45a358bb66c448878efd0bd552f8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1347459412}
+    - targetCorrespondingSourceObject: {fileID: 7064369059421299695, guid: 795c45a358bb66c448878efd0bd552f8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1347459411}
   m_SourcePrefab: {fileID: 100100000, guid: 795c45a358bb66c448878efd0bd552f8, type: 3}
 --- !u!1001 &484059214
 PrefabInstance:
@@ -301,6 +307,10 @@ PrefabInstance:
       propertyPath: barraAmmo
       value: 
       objectReference: {fileID: 1195363241}
+    - target: {fileID: 5274998221996617023, guid: 44e238a9acb41c24e93ff5627a09494a, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7099279590989803959, guid: 44e238a9acb41c24e93ff5627a09494a, type: 3}
       propertyPath: m_Name
       value: Player
@@ -312,7 +322,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7099279590989803959, guid: 44e238a9acb41c24e93ff5627a09494a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2082999348}
   m_SourcePrefab: {fileID: 100100000, guid: 44e238a9acb41c24e93ff5627a09494a, type: 3}
 --- !u!1 &493428939
 GameObject:
@@ -1300,6 +1313,42 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1347459407 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7064369059421299695, guid: 795c45a358bb66c448878efd0bd552f8, type: 3}
+  m_PrefabInstance: {fileID: 216688998}
+  m_PrefabAsset: {fileID: 0}
+--- !u!111 &1347459411
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1347459407}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 0}
+  m_Animations: []
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_CullingType: 0
+--- !u!114 &1347459412
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1347459407}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbabd47fe7038d04e9f5b708d74f27a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteRenderer: {fileID: 0}
+  skinName: char-afro.png
+  animator: {fileID: 0}
+  animation: {fileID: 1347459411}
 --- !u!1001 &1475267216
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1727,6 +1776,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 48ca59a951328dc4f93a5f75681b1b56, type: 3}
+--- !u!1 &1925913628 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7099279590989803959, guid: 44e238a9acb41c24e93ff5627a09494a, type: 3}
+  m_PrefabInstance: {fileID: 484059214}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1932163875
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1876,12 +1930,38 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4954145655286242081, guid: 44e238a9acb41c24e93ff5627a09494a, type: 3}
   m_PrefabInstance: {fileID: 484059214}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1925913628}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a829db0e397aca144b5bb75f4f3421ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &2082999342 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5274998221996617023, guid: 44e238a9acb41c24e93ff5627a09494a, type: 3}
+  m_PrefabInstance: {fileID: 484059214}
+  m_PrefabAsset: {fileID: 0}
+--- !u!212 &2082999347 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 2463255188423675248, guid: 44e238a9acb41c24e93ff5627a09494a, type: 3}
+  m_PrefabInstance: {fileID: 484059214}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2082999348
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1925913628}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbabd47fe7038d04e9f5b708d74f27a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteRenderer: {fileID: 2082999347}
+  skinName: char-afro.png
+  animator: {fileID: 2082999342}
+  animation: {fileID: 0}
 --- !u!1001 &2112668834
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2631,6 +2711,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1243361084}
     m_Modifications:
+    - target: {fileID: 3358579491508806268, guid: a0fd3fd8b67f6254e8b0125d5f604bbc, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3358579491508806268, guid: a0fd3fd8b67f6254e8b0125d5f604bbc, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3358579491508806268, guid: a0fd3fd8b67f6254e8b0125d5f604bbc, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5325449900991227250, guid: a0fd3fd8b67f6254e8b0125d5f604bbc, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
