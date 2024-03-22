@@ -166,7 +166,10 @@ namespace Networking
                 actionsToExecuteOnMainThread.Enqueue(() => {
                     if (serverObjects.TryGetValue(id, out NetworkIdentity ni))
                     {
-                        ni.transform.position = new Vector3(x, y, 0);
+                        if (ni != null) {
+                            ni.transform.position = new Vector3(x, y, 0);
+                        }
+                        
 
                     }
                 });
