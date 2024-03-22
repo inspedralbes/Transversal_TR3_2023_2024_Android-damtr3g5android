@@ -3291,6 +3291,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: StorePanel
       objectReference: {fileID: 0}
+    - target: {fileID: 9218228972449032308, guid: 9d8ada780acc0564f833369564eb5c8f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 4739562123033254114, guid: 9d8ada780acc0564f833369564eb5c8f, type: 3}
