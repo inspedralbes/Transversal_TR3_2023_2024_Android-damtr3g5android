@@ -154,9 +154,17 @@ namespace Networking
             {
                 string id = data["id"].ToString().RemoveQuotes();
 
-                GameObject go = serverObjects[id].gameObject;
-                Destroy(go);
-                serverObjects.Remove(ClientID);
+                if (serverObjects.TryGetValue(id, out NetworkIdentity networkIdentity))
+                {
+                    GameObject go = networkIdentity.gameObject;
+                    Destroy(go);
+                    serverObjects.Remove(id);
+                    Debug.Log($"Player {id} has disconnected and their object has been destroyed.");
+                }
+                else
+                {
+                    Debug.LogWarning($"Player {id} disconnect was received, but no matching object was found.");
+                }
             };
             OnUpdatePosition += (data) =>
             {
@@ -304,13 +312,38 @@ namespace Networking
         private void OnDestroy()
         {
             //Close socket when exiting application
+            SendDisconnectionMessage();
             socket.Close();
+        }
+        private void SendDisconnectionMessage()
+        {
+            if (socket != null && socket.ReadyState == WebSocketState.Open)
+            {
+                JObject data = new JObject
+                {
+                    ["event"] = "disconnect",
+                    ["id"] = ClientID // Assuming you have the client's ID stored
+                };
+                string message = data.ToString(Newtonsoft.Json.Formatting.None);
+                socket.Send(message);
+            }
+        }
+
+        public void AttemptoToJoinLobby() {
+            JObject data = new JObject
+            {
+                ["event"] = "joinGame",
+                
+            };
+            string message = data.ToString(Newtonsoft.Json.Formatting.None);
+            socket.Send(message);
         }
 
 
 
     }
- 
+
+
     [Serializable]
     public class Player {
         public string id;
